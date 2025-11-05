@@ -7,26 +7,88 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <h1>🤖 AI Chatbot</h1>
-            <button id="clearBtn" class="clear-btn">Clear Chat</button>
-        </div>
-        
-        <div class="chat-box" id="chatBox">
-            <div class="message bot-message">
-                <p>Hello! I'm your AI assistant. How can I help you today?</p>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <button class="new-chat-btn" id="newChatBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    New chat
+                </button>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="search-container">
+                    <input type="text" id="searchChats" placeholder="Search chats..." class="search-input">
+                </div>
+
+                <div class="chat-list" id="chatList">
+                    <!-- Chat history will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="personality-selector">
+                    <label for="personality">AI Personality:</label>
+                    <select id="personality" class="personality-dropdown">
+                        <option value="helpful">Helpful Assistant</option>
+                        <option value="professional">Professional</option>
+                        <option value="casual">Casual & Friendly</option>
+                        <option value="creative">Creative</option>
+                        <option value="concise">Concise</option>
+                    </select>
+                </div>
+                
+                <button class="theme-toggle" id="themeToggle">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                    <svg class="moon-icon hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    Dark Mode
+                </button>
             </div>
         </div>
-        
-        <div class="input-container">
-            <input 
-                type="text" 
-                id="userInput" 
-                placeholder="Type your message here..." 
-                autocomplete="off"
-            >
-            <button id="sendBtn">Send</button>
+
+        <!-- Main Chat Area -->
+        <div class="main-content">
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="welcome-screen">
+                        <h1>🤖 AI Chatbot</h1>
+                        <p>How can I help you today?</p>
+                    </div>
+                </div>
+
+                <div class="input-area">
+                    <div class="input-container">
+                        <input 
+                            type="text" 
+                            id="userInput" 
+                            placeholder="Message AI Chatbot..." 
+                            autocomplete="off"
+                        >
+                        <button class="voice-btn" id="voiceBtn" title="Voice input">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                <line x1="12" y1="19" x2="12" y2="23"/>
+                                <line x1="8" y1="23" x2="16" y2="23"/>
+                            </svg>
+                        </button>
+                        <button class="send-btn" id="sendBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13"/>
+                                <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
