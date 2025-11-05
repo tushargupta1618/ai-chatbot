@@ -45,6 +45,26 @@ body {
     height: 100vh;
 }
 
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 101;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mobile-menu-btn:hover {
+    background: var(--hover);
+}
+
 /* Sidebar */
 .sidebar {
     width: var(--sidebar-width);
@@ -109,6 +129,9 @@ body {
 }
 
 .chat-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 12px;
     margin-bottom: 4px;
     background: transparent;
@@ -116,9 +139,6 @@ body {
     cursor: pointer;
     font-size: 14px;
     color: var(--text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     transition: background 0.2s;
 }
 
@@ -128,6 +148,35 @@ body {
 
 .chat-item.active {
     background: var(--hover);
+}
+
+.chat-title {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.delete-chat-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: none;
+    transition: all 0.2s;
+}
+
+.chat-item:hover .delete-chat-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-chat-btn:hover {
+    background: #ef4444;
+    color: white;
 }
 
 .sidebar-footer {
@@ -352,15 +401,36 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+    }
+
     .sidebar {
         position: fixed;
         left: -260px;
         height: 100vh;
         z-index: 100;
         transition: left 0.3s;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar.open {
         left: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .chat-container {
+        padding-top: 60px;
+    }
+
+    .chat-messages {
+        padding: 10px;
+    }
+
+    .input-area {
+        padding: 10px;
     }
 }

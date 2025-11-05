@@ -8,6 +8,8 @@ const themeToggle = document.getElementById('themeToggle');
 const personalitySelect = document.getElementById('personality');
 const chatList = document.getElementById('chatList');
 const searchChats = document.getElementById('searchChats');
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const sidebar = document.getElementById('sidebar');
 
 // State
 let currentChatId = null;
@@ -29,6 +31,7 @@ newChatBtn.addEventListener('click', startNewChat);
 themeToggle.addEventListener('click', toggleTheme);
 personalitySelect.addEventListener('change', updatePersonality);
 searchChats.addEventListener('input', filterChats);
+mobileMenuBtn.addEventListener('click', toggleSidebar);
 
 // Send Message
 function sendMessage() {
@@ -188,6 +191,11 @@ function startNewChat() {
     document.querySelectorAll('.chat-item').forEach(item => {
         item.classList.remove('active');
     });
+    
+    // Close sidebar on mobile
+    if (window.innerWidth <= 768) {
+        sidebar.classList.remove('open');
+    }
 }
 
 function loadChat(chatId) {
@@ -206,6 +214,11 @@ function loadChat(chatId) {
     document.querySelectorAll('.chat-item').forEach(item => {
         item.classList.toggle('active', item.dataset.chatId === chatId);
     });
+    
+    // Close sidebar on mobile
+    if (window.innerWidth <= 768) {
+        sidebar.classList.remove('open');
+    }
 }
 
 function renderChatList() {
@@ -215,7 +228,26 @@ function renderChatList() {
         const chatItem = document.createElement('div');
         chatItem.className = 'chat-item';
         chatItem.dataset.chatId = chat.id;
-        chatItem.textContent = chat.title;
+        
+        const chatTitle = document.createElement('span');
+        chatTitle.className = 'chat-title';
+        chatTitle.textContent = chat.title;
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-chat-btn';
+        deleteBtn.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+            </svg>
+        `;
+        deleteBtn.title = 'Delete chat';
+        deleteBtn.onclick = (e) => {
+            e.stopPropagation();
+            deleteChat(chat.id);
+        };
+        
+        chatItem.appendChild(chatTitle);
+        chatItem.appendChild(deleteBtn);
         
         if (chat.id === currentChatId) {
             chatItem.classList.add('active');
@@ -225,6 +257,19 @@ function renderChatList() {
         
         chatList.appendChild(chatItem);
     });
+}
+
+function deleteChat(chatId) {
+    if (confirm('Delete this chat?')) {
+        chats = chats.filter(c => c.id !== chatId);
+        saveChatHistory();
+        
+        if (currentChatId === chatId) {
+            startNewChat();
+        }
+        
+        renderChatList();
+    }
 }
 
 function loadChatHistory() {
@@ -241,7 +286,7 @@ function filterChats() {
     
     chatItems.forEach(item => {
         const title = item.textContent.toLowerCase();
-        item.style.display = title.includes(searchTerm) ? 'block' : 'none';
+        item.style.display = title.includes(searchTerm) ? 'flex' : 'none';
     });
 }
 
@@ -268,6 +313,19 @@ function loadTheme() {
 
 // Personality
 function updatePersonality() {
-    // Personality will be sent with each message
     console.log('Personality changed to:', personalitySelect.value);
 }
+
+// Mobile Sidebar Toggle
+function toggleSidebar() {
+    sidebar.classList.toggle('open');
+}
+
+// Close sidebar when clicking outside on mobile
+document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
+        if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    }
+});
